@@ -1,13 +1,29 @@
 import React from 'react';
-import { CATEGORIES, PRODUCTS } from '../data';
+import { CATEGORIES } from '../data'; // Chỉ giữ lại CATEGORIES tĩnh
 import { ProductCard } from './ProductCard';
 import { Link } from 'react-router';
 import { ArrowRight } from 'lucide-react';
+import { useProducts } from '../useProducts'; // 1. Thêm hook hút dữ liệu
 
 export function Home() {
-  const newArrivals = PRODUCTS.filter(p => p.category === 'Sản phẩm mới' || p.category === 'Cây treo').slice(0, 4);
-  const succulents = PRODUCTS.filter(p => p.category === 'Sen đá' || p.category === 'Xương rồng').slice(0, 4);
-  const deskPlants = PRODUCTS.filter(p => p.category === 'Cây để bàn').slice(0, 4);
+  // 2. Lấy dữ liệu từ Google Sheets
+  const { products: fetchedProducts, loading } = useProducts();
+
+  // 3. Logic lọc sản phẩm từ dữ liệu mới
+  const newArrivals = fetchedProducts
+    .filter(p => p.category === 'Sản phẩm mới' || p.category === 'Cây treo')
+    .slice(0, 4);
+  const succulents = fetchedProducts
+    .filter(p => p.category === 'Sen đá' || p.category === 'Xương rồng')
+    .slice(0, 4);
+  const deskPlants = fetchedProducts
+    .filter(p => p.category === 'Cây để bàn')
+    .slice(0, 4);
+
+  // Hiển thị trạng thái đang tải
+  if (loading) {
+    return <div className="py-20 text-center text-stone-500">Đang khởi tạo vườn cây...</div>;
+  }
 
   return (
     <div className="w-full">
@@ -17,7 +33,7 @@ export function Home() {
           {/* Large Banner (Left) */}
           <div className="md:col-span-8 relative rounded-2xl overflow-hidden group min-h-[320px] md:min-h-0">
             <img 
-              src="https://images.unsplash.com/photo-1585444094513-7c7eec93be68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xvcmZ1bCUyMHN1Y2N1bGVudCUyMHZhcmlldHl8ZW58MXx8fHwxNzc4MTM1MTE1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" 
+              src="https://images.unsplash.com/photo-1585444094513-7c7eec93be68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xvcmZ1bCUyMHN1Y2N1bGVudCUyMHZhcmlldHl8ZW58MXx8fHwxNzc4MTM1MTE1fDA&ixlib=rb-4.1.0&q=80&w=1080" 
               alt="Mang thiên nhiên vào không gian của bạn" 
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
@@ -41,10 +57,9 @@ export function Home() {
 
           {/* Small Banners (Right) */}
           <div className="md:col-span-4 flex flex-col gap-3 md:gap-4">
-            {/* Top Small Banner */}
             <div className="flex-1 relative rounded-2xl overflow-hidden group min-h-[180px] md:min-h-0">
               <img 
-                src="https://images.unsplash.com/photo-1664438279397-4422f095d786?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMG1vbnN0ZXJhJTIwcGxhbnQlMjBpbmRvb3IlMjBicmlnaHR8ZW58MXx8fHwxNzc4MTM1MTE1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" 
+                src="https://images.unsplash.com/photo-1664438279397-4422f095d786?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMG1vbnN0ZXJhJTIwcGxhbnQlMjBpbmRvb3IlMjBicmlnaHR8ZW58MXx8fHwxNzc4MTM1MTE1fDA&ixlib=rb-4.1.0&q=80&w=1080" 
                 alt="Sản phẩm bán chạy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
@@ -57,10 +72,9 @@ export function Home() {
               </div>
             </div>
 
-            {/* Bottom Small Banner */}
             <div className="flex-1 relative rounded-2xl overflow-hidden group min-h-[180px] md:min-h-0">
               <img 
-                src="https://images.unsplash.com/photo-1777590786052-f55169a21d97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWxhdGhlYSUyMHBsYW50JTIwdmlicmFudCUyMGxlYXZlc3xlbnwxfHx8fDE3NzgxMzUxMTV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" 
+                src="https://images.unsplash.com/photo-1777590786052-f55169a21d97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWxhdGhlYSUyMHBsYW50JTIwdmlicmFudCUyMGxlYXZlc3xlbnwxfHx8fDE3NzgxMzUxMTV8MA&ixlib=rb-4.1.0&q=80&w=1080" 
                 alt="Combo quà tặng" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
@@ -76,10 +90,10 @@ export function Home() {
         </div>
       </section>
 
-      {/* Category Pills (Horizontal Scroll) */}
+      {/* Category Pills */}
       <section className="border-b border-[#EAE4D9] bg-white sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto pt-4 pb-2 gap-3 items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="flex overflow-x-auto pt-4 pb-2 gap-3 items-center [&::-webkit-scrollbar]:hidden">
             {CATEGORIES.map((cat, idx) => (
               <button 
                 key={cat}
@@ -89,7 +103,6 @@ export function Home() {
               </button>
             ))}
           </div>
-          {/* Pagination Dots */}
           <div className="flex justify-center items-center gap-1.5 pb-4">
             <div className="w-1.5 h-1.5 rounded-full bg-green-700"></div>
             <div className="w-1.5 h-1.5 rounded-full bg-[#EAE4D9]"></div>
@@ -100,13 +113,11 @@ export function Home() {
 
       {/* Product Sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
-        
-        {/* New Arrivals */}
         <section>
           <div className="flex justify-between items-end mb-6">
             <div>
               <h2 className="text-2xl md:text-3xl font-medium text-stone-900 tracking-tight">Sản phẩm mới</h2>
-              <p className="text-stone-500 mt-2">Những mẫu cây mới nhất trong bộ sưu tập.</p>
+              <p className="text-stone-500 mt-2">Những mẫu cây mới nhất từ Google Sheets.</p>
             </div>
             <Link to="/products" className="text-green-700 hover:text-green-800 font-medium text-sm flex items-center gap-1 hidden sm:flex">
               Xem tất cả <ArrowRight className="w-4 h-4" />
@@ -119,7 +130,6 @@ export function Home() {
           </div>
         </section>
 
-        {/* Succulents & Cacti */}
         <section>
           <div className="flex justify-between items-end mb-6">
             <div>
@@ -137,7 +147,6 @@ export function Home() {
           </div>
         </section>
 
-        {/* Desk Plants */}
         <section>
           <div className="flex justify-between items-end mb-6">
             <div>
@@ -154,7 +163,6 @@ export function Home() {
             ))}
           </div>
         </section>
-
       </div>
     </div>
   );
