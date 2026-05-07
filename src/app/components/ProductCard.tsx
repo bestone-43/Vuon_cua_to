@@ -31,7 +31,10 @@ export function ProductCard({ product }: { product: Product }) {
               {product.name}
             </h3>
           </Link>
-          <p className="text-sm text-stone-500 mt-1">${product.price.toFixed(2)}</p>
+          {/* PHẦN GIÁ TIỀN ĐÃ ĐƯỢC CẬP NHẬT ĐỊNH DẠNG VIỆT NAM */}
+          <p className="text-sm text-stone-500 mt-1">
+            {Number(product.price).toLocaleString('vi-VN')}đ
+          </p>
         </div>
         <button 
           className="flex-shrink-0 bg-green-700 text-white p-2 rounded-full hover:bg-green-800 transition-colors"
